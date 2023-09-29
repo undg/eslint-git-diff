@@ -7,4 +7,3 @@ type Flg struct {
 	Branch   string
 	Fetch    bool
 }
-
