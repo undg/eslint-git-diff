@@ -4,13 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 func must(out []byte, err error) {
-        if err != nil {
-            fmt.Printf("err: %s\n%s", err, out)
-            panic(err)
-        }
+	if err != nil {
+		fmt.Printf("ERROR!\n%s\n", string(out))
+		panic(err)
+	}
 }
 
 func main() {
@@ -22,6 +23,8 @@ func main() {
 	shFix := ""
 	shEslint := ""
 	shBranch := ""
+
+	// var myArguments []string
 
 	{
 		flag.BoolVar(&flgFix, "fix", false, "add --fix flag to eslint")
@@ -35,25 +38,35 @@ func main() {
 		flag.Parse()
 	}
 
-	if flgEslint && flgFix {
-		shFix = "--fix"
-	}
+	// if flgEslint {
+	// 	myArguments = append(myArguments, "eslint_d")
+	// 	if flgFix {
+	// 		myArguments = append(myArguments, "--fix")
+	// 	}
+	// } else {
+	// 	myArguments = append(myArguments, "echo")
+	// }
 
-	if flgEslint {
-		shEslint = "eslint_d "
-	}
+    // myArguments = append(myArguments, "$(git status)")
 
 	if flgFetch {
-        cmd := exec.Command("git", "diff")
-        out, err := cmd.CombinedOutput()
-
-        must(out, err)
-
-        fmt.Printf("output of git fetch:\n%s\n", string(out))
+		out, err := exec.Command("git", "statu").CombinedOutput()
+		must(out, err)
+		fmt.Printf("output of git fetch:\n%s\n", string(out))
 	}
 
 	shBranch = flgBranch
 
-	fmt.Println(shEslint, "git diff --name-only --diff-filter=dm", shFix, shBranch)
+	fmt.Println(shEslint, shFix, "git diff --name-only --diff-filter=dm", shBranch)
+
+    // "git diff --name-only --diff-filter=dm", shFix, shBranch
+
+    gitArguments := strings.Fields("diff --name-only --diff-filter=dm HEAD")
+    {
+        out, _  := exec.Command("git", gitArguments...).CombinedOutput()
+        // must(out, err)
+        fmt.Println(string(out))
+        fmt.Println(gitArguments)
+    }
 
 }
