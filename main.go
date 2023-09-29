@@ -20,53 +20,63 @@ func main() {
 	var flgBranch string
 	var flgFetch bool
 
-	shFix := ""
-	shEslint := ""
-	shBranch := ""
-
-	// var myArguments []string
+    var files []string
+	var command []string
 
 	{
 		flag.BoolVar(&flgFix, "fix", false, "add --fix flag to eslint")
 		flag.BoolVar(&flgFix, "f", false, "add --fix flag to eslint")
+
 		flag.BoolVar(&flgEslint, "eslint", true, "run eslint with listed files")
 		flag.BoolVar(&flgEslint, "e", true, "run eslint with listed files")
+
 		flag.StringVar(&flgBranch, "branch", "origin/dev", "branch to check files against")
 		flag.StringVar(&flgBranch, "b", "origin/dev", "branch to check files against")
+
 		flag.BoolVar(&flgFetch, "fetch", false, "Before run git fetch")
 
 		flag.Parse()
 	}
 
-	// if flgEslint {
-	// 	myArguments = append(myArguments, "eslint_d")
-	// 	if flgFix {
-	// 		myArguments = append(myArguments, "--fix")
-	// 	}
-	// } else {
-	// 	myArguments = append(myArguments, "echo")
-	// }
-
-    // myArguments = append(myArguments, "$(git status)")
-
-	if flgFetch {
-		out, err := exec.Command("git", "statu").CombinedOutput()
-		must(out, err)
-		fmt.Printf("output of git fetch:\n%s\n", string(out))
+	// git fetch
+	{
+		if flgFetch {
+			out, err := exec.Command("git", "statu").CombinedOutput()
+			must(out, err)
+			fmt.Printf("output of git fetch:\n%s\n", string(out))
+		}
 	}
 
-	shBranch = flgBranch
+    // eslint
+	{
+		if flgEslint {
+			command = append(command, "eslint_d")
+			if flgFix {
+				command = append(command, "--fix")
+			}
+		} else {
+			command = append(command, "echo")
+		}
+	}
 
-	fmt.Println(shEslint, shFix, "git diff --name-only --diff-filter=dm", shBranch)
-
-    // "git diff --name-only --diff-filter=dm", shFix, shBranch
-
-    gitArguments := strings.Fields("diff --name-only --diff-filter=dm HEAD")
+    // get files
     {
-        out, _  := exec.Command("git", gitArguments...).CombinedOutput()
-        // must(out, err)
+        gitArguments := strings.Fields("diff --name-only --diff-filter=d " + flgBranch)
+
+        out, err := exec.Command("git", gitArguments...).CombinedOutput()
+        must(out, err)
         fmt.Println(string(out))
-        fmt.Println(gitArguments)
+        files = strings.Fields(string(out))
     }
 
+    // run finall command
+    {
+        cmd := command[0]
+        args := append(command[1:], files...)
+        out, err := exec.Command(cmd, args...).CombinedOutput()
+
+        must(out, err)
+        
+        fmt.Println(string(out))
+    }
 }
