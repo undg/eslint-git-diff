@@ -24,9 +24,9 @@ jobs:
     steps:
       - name: "Build"
         run: |
-          pwd
-          ls
-          go build -v -o eslint-git-diff
+          - pwd
+          - ls
+          # go build -v -o eslint-git-diff
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
