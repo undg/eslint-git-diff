@@ -1,6 +1,6 @@
 module eslint-git-diff
 
-go 1.21.1
+go 1.23
 
 require (
 	github.com/creack/pty v1.1.18
