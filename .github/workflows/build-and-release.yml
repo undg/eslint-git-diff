@@ -10,20 +10,22 @@ jobs:
   pre-release:
     name: "Pre Release"
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
-        goos: [linux, windows, darwin]
-        goarch: ["386", amd64, arm64]
-        exclude:
-          - goarch: "386"
-            goos: darwin
-          - goarch: arm64
-            goos: windows
+    # strategy:
+    #   matrix:
+    #     # build and publish in parallel: linux/386, linux/amd64, linux/arm64, windows/386, windows/amd64, darwin/amd64, darwin/arm64
+    #     goos: [linux, windows, darwin]
+    #     goarch: ["386", amd64, arm64]
+    #     exclude:
+    #       - goarch: "386"
+    #         goos: darwin
+    #       - goarch: arm64
+    #         goos: windows
 
     steps:
       - name: "Build"
         run: |
+          pwd
+          ls
           go build -v -o eslint-git-diff
 
       - uses: "marvinpinto/action-automatic-releases@latest"
