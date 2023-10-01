@@ -21,7 +21,7 @@ func GetGitDiffFiles(flg Flg) string {
 	out, err := exec.Command("git", gitArguments...).CombinedOutput()
 
 	if err != nil {
-		fmt.Printf("ERROR!\n%s\n", string(out))
+		fmt.Printf("GIT DIFF ERROR!\n%s\n", string(out))
 		panic(err)
 	}
 
@@ -32,7 +32,7 @@ func GitFetch() {
 	out, err := exec.Command("git", "fetch").CombinedOutput()
 
 	if err != nil {
-		fmt.Printf("ERROR!\n%s\n", string(out))
+		fmt.Printf("GIT FETCH ERROR!\n%s\n", string(out))
 		panic(err)
 	}
 }
@@ -47,6 +47,12 @@ func Eslint(command []string, files string, flg Flg) {
 	commands := command[0]
 	args := append(command[1:], strings.Fields(files)...)
 	cmd := exec.Command(commands, args...)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("ESLINT_D ERROR!\n%s\n", string(out))
+		panic(err)
+	}
 
 	f, err := pty.Start(cmd)
 
