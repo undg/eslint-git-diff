@@ -24,8 +24,7 @@ jobs:
     steps:
       - name: "Build"
         run: |
-          - pwd
-          - ls
+          echo "done!"
           # go build -v -o eslint-git-diff
 
       - uses: "marvinpinto/action-automatic-releases@latest"
@@ -35,6 +34,4 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            eslint-git-diff
             README.md
-
