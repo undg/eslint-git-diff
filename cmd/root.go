@@ -54,11 +54,11 @@ func Execute() {
 
 func init() {
 	// cobra.OnInitialize()
-	rootCmd.PersistentFlags().BoolVarP(&flg.Eslint, "eslint", "e", true, "run eslint with listed files")
+	rootCmd.PersistentFlags().BoolVarP(&flg.Eslint, "eslint", "e", true, "run eslint")
+	rootCmd.PersistentFlags().BoolVarP(&flg.NoEslint, "no-eslint", "x", false, "don't run eslint, list diff files only")
 	rootCmd.PersistentFlags().BoolVarP(&flg.Fix, "fix", "f", false, "add --fix flag to eslint")
-	rootCmd.PersistentFlags().BoolVar(&flg.NoEslint, "no-eslint", false, "don't run eslint, list diff files only")
-	rootCmd.PersistentFlags().BoolVar(&flg.Fetch, "fetch", false, "Git fetch, on startup")
+	rootCmd.PersistentFlags().BoolVarP(&flg.Fetch, "fetch", "u", false, "Git fetch, on startup")
 	rootCmd.PersistentFlags().StringVarP(&flg.Branch, "branch", "b", "origin/dev", "branch to check files against")
-	rootCmd.PersistentFlags().StringVarP(&flg.Watch, "watch", "w", "", "Watch the paths for changes")
+	rootCmd.PersistentFlags().StringVarP(&flg.Watch, "watch", "w", "", "watch the path for changes. [eslint-git-diff -w src]")
 
 }
