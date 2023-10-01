@@ -6,4 +6,5 @@ type Flg struct {
 	NoEslint bool
 	Branch   string
 	Fetch    bool
+	Watch    string
 }

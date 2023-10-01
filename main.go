@@ -3,6 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"time"
+
+	"github.com/radovskyb/watcher"
 
 	run "git-diff-files/run"
 	structs "git-diff-files/structs"
@@ -29,6 +33,9 @@ func main() {
 
 		flag.BoolVar(&flg.Fetch, "fetch", false, "Before run git fetch")
 
+		flag.StringVar(&flg.Watch, "w", "", "Watch the paths for changes")
+		flag.StringVar(&flg.Watch, "watch", "", "Watch the paths for changes")
+
 		flag.Parse()
 	}
 
@@ -42,10 +49,55 @@ func main() {
 		flg.Eslint = false
 	}
 
-	if flg.Eslint {
-		run.Eslint(command, files, flg)
+	if flg.Watch != "" {
+		w := watcher.New()
+		w.SetMaxEvents(1)
+		w.FilterOps(watcher.Rename, watcher.Move, watcher.Write)
+
+		// r := regexp.MustCompile("^abc$")
+		// w.AddFilterHook((watcher.RegexFilterHook(r, false)))
+
+		go func() {
+			for {
+				select {
+				case event := <-w.Event:
+					fmt.Println(event)
+
+					if flg.Eslint {
+						run.Eslint(command, files, flg)
+					} else {
+						fmt.Println("\n" + files)
+					}
+				case err := <-w.Error:
+					fmt.Println(err)
+				case <-w.Closed:
+					return
+				}
+			}
+		}()
+
+		if err := w.AddRecursive(flg.Watch); err != nil {
+			log.Fatalln(err)
+		}
+
+		// Trigger 2 events after watcher started
+		go func() {
+			w.Wait()
+			w.TriggerEvent(watcher.Create, nil)
+			w.TriggerEvent(watcher.Remove, nil)
+		}()
+
+		// Start the watching process - it'll check for changes every 100 ms
+		if err := w.Start(time.Millisecond * 100); err != nil {
+			log.Fatalln(err)
+		}
+
 	} else {
-		fmt.Println("\n" + files)
+		if flg.Eslint {
+			run.Eslint(command, files, flg)
+		} else {
+			fmt.Println("\n" + files)
+		}
 	}
 
 }
