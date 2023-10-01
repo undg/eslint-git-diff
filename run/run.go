@@ -15,7 +15,7 @@ import (
 
 type Flg = structs.Flg
 
-func GetFiles(flg Flg) string {
+func GetGitDiffFiles(flg Flg) string {
 	gitArguments := strings.Fields("diff --name-only --diff-filter=d " + flg.Branch)
 
 	out, err := exec.Command("git", gitArguments...).CombinedOutput()

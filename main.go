@@ -43,7 +43,7 @@ func main() {
 		run.GitFetch()
 	}
 
-	files = run.GetFiles(flg)
+	files = run.GetGitDiffFiles(flg)
 
 	if flg.NoEslint {
 		flg.Eslint = false
@@ -52,21 +52,30 @@ func main() {
 	if flg.Watch != "" {
 		w := watcher.New()
 		w.SetMaxEvents(1)
-		w.FilterOps(watcher.Rename, watcher.Move, watcher.Write)
-
-		// r := regexp.MustCompile("^abc$")
-		// w.AddFilterHook((watcher.RegexFilterHook(r, false)))
+		w.FilterOps(
+			watcher.Write,
+			watcher.Move,
+			watcher.Rename,
+			watcher.Create,
+			watcher.Remove,
+		)
 
 		go func() {
 			for {
 				select {
 				case event := <-w.Event:
-					fmt.Println(event)
+					if event.Op == watcher.Move ||
+						event.Op == watcher.Rename ||
+						event.Op == watcher.Create ||
+						event.Op == watcher.Remove {
+						files = run.GetGitDiffFiles(flg)
+					}
 
 					if flg.Eslint {
 						run.Eslint(command, files, flg)
 					} else {
 						fmt.Println("\n" + files)
+						fmt.Println("\nevent:", event)
 					}
 				case err := <-w.Error:
 					fmt.Println(err)
@@ -91,7 +100,6 @@ func main() {
 		if err := w.Start(time.Millisecond * 100); err != nil {
 			log.Fatalln(err)
 		}
-
 	} else {
 		if flg.Eslint {
 			run.Eslint(command, files, flg)
