@@ -7,10 +7,10 @@
 ## Compile from source
 
 ```bash
-git clone https://github.com/undg/eslint-git-diff-files
-cd eslint-git-diff-files
-go build -o build/git-diff-files
+git clone https://github.com/undg/eslint-git-diff
+cd eslint-git-diff
+go build -o build/eslint-git-diff
 cd build
-chmod +x git-diff-files
+chmod +x eslint-git-diff
 ```
 

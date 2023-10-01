@@ -1,4 +1,4 @@
-module git-diff-files
+module eslint-git-diff
 
 go 1.21.1
 

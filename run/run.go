@@ -10,7 +10,7 @@ import (
 
 	"github.com/creack/pty"
 
-	structs "git-diff-files/structs"
+	structs "eslint-git-diff/structs"
 )
 
 type Flg = structs.Flg

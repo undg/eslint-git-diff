@@ -8,8 +8,8 @@ import (
 
 	"github.com/radovskyb/watcher"
 
-	run "git-diff-files/run"
-	structs "git-diff-files/structs"
+	run "eslint-git-diff/run"
+	structs "eslint-git-diff/structs"
 )
 
 func main() {
