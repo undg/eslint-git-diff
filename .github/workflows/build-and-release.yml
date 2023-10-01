@@ -1,4 +1,3 @@
-
 name: Release Go project
 
 on:
@@ -10,19 +9,19 @@ permissions:
   contents: write
 
 jobs:
-  goreleaser:
+  build:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      -
-        name: Set up Go
+
+      - name: Set up Go
         uses: actions/setup-go@v4
-      -
-        name: Run GoReleaser
+
+      - run: go build -v
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
