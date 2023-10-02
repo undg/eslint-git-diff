@@ -7,4 +7,5 @@ type Flg struct {
 	Branch   string
 	Fetch    bool
 	Watch    string
+	Version  bool
 }

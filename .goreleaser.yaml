@@ -18,6 +18,8 @@ builds:
         goarch: arm64
       - goos: linux
         goarch: arm64
+    ldflags: 
+      - "-X eslint-git-diff/cmd.stringVersion={{.Version}}"
 
 archives:
   - format: tar.gz

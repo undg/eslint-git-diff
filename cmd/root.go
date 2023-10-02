@@ -12,6 +12,8 @@ import (
 
 var flg = structs.Flg{}
 
+var stringVersion string
+
 var rootCmd = &cobra.Command{
 	Use:   "eslint-git-diff",
 	Short: "Run eslint_d on git diff filles",
@@ -19,6 +21,11 @@ var rootCmd = &cobra.Command{
                 Add few missing options for eslint. Native to your sytem watch mode and awesome eslint_d.
                 Lint only files that are pressent in git diff.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if flg.Version {
+			fmt.Println(stringVersion)
+			return
+		}
+
 		var files string
 		var command []string
 
@@ -61,4 +68,5 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&flg.Branch, "branch", "b", "origin/dev", "branch to check files against")
 	rootCmd.PersistentFlags().StringVarP(&flg.Watch, "watch", "w", "", "watch the path for changes. [eslint-git-diff -w src]")
 
+	rootCmd.PersistentFlags().BoolVarP(&flg.Version, "version", "v", false, "show app version")
 }
