@@ -1,6 +1,6 @@
 ## Dependencies
 
-Those apps are necessary to be presents in your system. Install them from in whatever way you like.
+Those apps are necessary to be presents in your system. Install them in whatever way you like.
 
 * (eslint)[https://eslint.org/]
 * (eslint_d)[https://www.npmjs.com/package/eslint_d]
