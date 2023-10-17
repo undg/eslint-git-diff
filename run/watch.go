@@ -9,7 +9,6 @@ import (
 	"github.com/radovskyb/watcher"
 )
 
-
 func Watcher(command []string, files string, flg structs.Flg) {
 	w := watcher.New()
 	w.SetMaxEvents(1)
@@ -33,6 +32,17 @@ func Watcher(command []string, files string, flg structs.Flg) {
 				}
 
 				if flg.Eslint {
+					switch flg.Verbose {
+					case 0:
+						fmt.Println("\n", event.Op.String(), event.Name())
+					case 1:
+						fmt.Println("\n", event.Op.String(), "time:", event.ModTime(), event.Name())
+					case 2:
+						fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files)
+					default:
+						fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files, "Random error generator: wnMethod: No such interface “org.freedesktop.portal.Inhibit” on object at path /org/freedesktop/portal/desktop", "Cow Say: muuuuuuuuu", "Cat Say: meaw")
+					}
+
 					Eslint(command, files, flg)
 				} else {
 					fmt.Println("\n" + files)

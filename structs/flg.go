@@ -8,4 +8,5 @@ type Flg struct {
 	Fetch    bool
 	Watch    string
 	Version  bool
+	Verbose  int
 }
