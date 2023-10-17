@@ -50,13 +50,6 @@ func Watcher(command []string, files string, flg structs.Flg) {
 		log.Fatalln(err)
 	}
 
-	// Trigger 2 events after watcher started
-	go func() {
-		w.Wait()
-		w.TriggerEvent(watcher.Create, nil)
-		w.TriggerEvent(watcher.Remove, nil)
-	}()
-
 	// Start the watching process - it'll check for changes every 100 ms
 	if err := w.Start(time.Millisecond * 100); err != nil {
 		log.Fatalln(err)
