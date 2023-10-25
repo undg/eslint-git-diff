@@ -66,7 +66,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&flg.Fix, "fix", "f", false, "add --fix flag to eslint")
 	rootCmd.PersistentFlags().BoolVarP(&flg.Fetch, "fetch", "u", false, "Git fetch, on startup")
 	rootCmd.PersistentFlags().StringVarP(&flg.Branch, "branch", "b", "origin/dev", "branch to check files against")
-	rootCmd.PersistentFlags().StringVarP(&flg.Watch, "watch", "w", ".", "watch the path for changes. [eslint-git-diff -w src]")
+	rootCmd.PersistentFlags().StringVarP(&flg.Watch, "watch", "w", "", "watch the path for changes. [eslint-git-diff -w src]")
 	rootCmd.PersistentFlags().CountVarP(&flg.Verbose, "verbose", "v", "Be verbose [-v, or -vv]")
 
 	// variable for this flag is crated on compolation time. Check goreleaser or shell build script.
