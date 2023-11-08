@@ -21,33 +21,15 @@ func Watcher(command []string, files string, flg structs.Flg) {
 	)
 
 	go func() {
+		fmt.Print("\033[H\033[2J") // clear screen
+		fmt.Printf("[%s] Starting watcher...\n", time.Now().Format("15:00:00"))
+
+		go Eslint(command, files, flg)
+
 		for {
 			select {
 			case event := <-w.Event:
-				if event.Op == watcher.Move ||
-					event.Op == watcher.Rename ||
-					event.Op == watcher.Create ||
-					event.Op == watcher.Remove {
-					files = GetGitDiffFiles(flg)
-				}
-
-				if flg.Eslint {
-					switch flg.Verbose {
-					case 0:
-						fmt.Println("\n", event.Op.String(), event.Name())
-					case 1:
-						fmt.Println("\n", event.Op.String(), "time:", event.ModTime(), event.Name())
-					case 2:
-						fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files)
-					default:
-						fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files, "Random error generator: wnMethod: No such interface “org.freedesktop.portal.Inhibit” on object at path /org/freedesktop/portal/desktop", "Cow Say: muuuuuuuuu", "Cat Say: meaw")
-					}
-
-					Eslint(command, files, flg)
-				} else {
-					fmt.Println("\n" + files)
-					fmt.Println("\nevent:", event)
-				}
+				run(command, files, flg, event)
 			case err := <-w.Error:
 				fmt.Println(err)
 			case <-w.Closed:
@@ -64,4 +46,29 @@ func Watcher(command []string, files string, flg structs.Flg) {
 	if err := w.Start(time.Millisecond * 100); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func run(command []string, files string, flg structs.Flg, event watcher.Event) {
+	files = GetGitDiffFiles(flg)
+
+	fmt.Print("\033[H\033[2J") // clear screen
+
+	if flg.Eslint {
+		switch flg.Verbose {
+		case 0:
+			fmt.Printf("\n[%s] %s %s", event.ModTime().Format("15:00:00"), event.Op.String(), event.Name())
+		case 1:
+			fmt.Printf("\n[%s] %s %s\n%s", event.ModTime(), event.Op.String(), event.Name(), files)
+		case 2:
+			fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files)
+		default:
+			fmt.Println("\nevent:", event, "\ntime:", event.ModTime(), "\ncommand:", command, "\nflg:", flg, "\nfiles:\n", files, "Random error generator: wnMethod: No such interface “org.freedesktop.portal.Inhibit” on object at path /org/freedesktop/portal/desktop", "Cow Say: muuuuuuuuu", "Cat Say: meaw")
+		}
+
+		go Eslint(command, files, flg)
+	} else {
+		fmt.Println("\n" + files)
+		fmt.Println("\nevent:", event)
+	}
+
 }
