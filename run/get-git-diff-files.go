@@ -8,7 +8,9 @@ import (
 )
 
 func GetGitDiffFiles(flg structs.Flg) string {
-	gitArguments := strings.Fields("diff --name-only --diff-filter=d " + flg.Branch)
+	gitArguments := filterFiles(strings.Fields("diff --name-only --diff-filter=d "+flg.Branch), flg.Watch)
+
+	fmt.Println(flg)
 
 	out, err := exec.Command("git", gitArguments...).CombinedOutput()
 
@@ -17,5 +19,9 @@ func GetGitDiffFiles(flg structs.Flg) string {
 		panic(err)
 	}
 
-	return string(out)
+	files := strings.Join(filterFiles(strings.Split(string(out), "\n"), flg.Watch), " ")
+
+	fmt.Println(files)
+
+	return files
 }

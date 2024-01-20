@@ -3,7 +3,7 @@ package structs
 type Flg struct {
 	Fix      bool
 	Eslint   bool
-	NoEslint bool
+	List bool
 	Branch   string
 	Fetch    bool
 	Watch    string

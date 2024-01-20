@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
 
 		files = run.GetGitDiffFiles(flg)
 
-		if flg.NoEslint {
+		if flg.List {
 			flg.Eslint = false
 		}
 
@@ -62,7 +62,7 @@ func Execute() {
 func init() {
 	// cobra.OnInitialize()
 	rootCmd.PersistentFlags().BoolVarP(&flg.Eslint, "eslint", "e", true, "run eslint")
-	rootCmd.PersistentFlags().BoolVarP(&flg.NoEslint, "no-eslint", "x", false, "don't run eslint, list diff files only")
+	rootCmd.PersistentFlags().BoolVarP(&flg.List, "list", "l", false, "don't run eslint, list diff files only")
 	rootCmd.PersistentFlags().BoolVarP(&flg.Fix, "fix", "f", false, "add --fix flag to eslint")
 	rootCmd.PersistentFlags().BoolVarP(&flg.Fetch, "fetch", "u", false, "Git fetch, on startup")
 	rootCmd.PersistentFlags().StringVarP(&flg.Branch, "branch", "b", "origin/dev", "branch to check files against")
