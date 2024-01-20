@@ -42,6 +42,12 @@ func TestFilterDotFiles(t *testing.T) {
 			path: "src",
 			expected: []string{"src/xfile1", "src/xfile3"},
 		},
+		{
+			name:     "husky dot file in deep dir",
+			files:    []string{"pnpm-lock.yaml", "package.json", "src/xfile1", "src/xfile3"},
+			path: "src",
+			expected: []string{"src/xfile1", "src/xfile3"},
+		},
 	}
 
 	for _, tt := range tests {
