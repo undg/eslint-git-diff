@@ -1,14 +1,11 @@
 package run
 
 import (
-	"fmt"
 	"strings"
 )
 
 func filterFiles(files []string, path string) []string {
 	filtered := []string{}
-
-	fmt.Println("filtering files...")
 
 	for _, file := range files {
 		// @TODO (undg) 2024-01-20: read it from eslintignore
