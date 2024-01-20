@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-go build.sh
+./build.sh
 
 while true
 do
-    inotifywait -qq -r -e create,close_write,modify,move,delete ./ && go build.sh
+    inotifywait -qq -r -e create,close_write,modify,move,delete ./ && ./build.sh
 done
 
