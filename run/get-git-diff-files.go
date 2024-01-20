@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// Returns list of git diff files.
+// One line, space separated.
 func GetGitDiffFiles(flg structs.Flg) string {
 	gitArguments := strings.Fields("diff --name-only --diff-filter=d "+flg.Branch)
 
@@ -17,9 +19,12 @@ func GetGitDiffFiles(flg structs.Flg) string {
 		panic(err)
 	}
 
-	files := strings.Join(filterFiles(strings.Split(string(out), "\n"), flg.Watch), " ")
+	filesOneByLine := strings.ReplaceAll(string(out), "\r\n", "\n")
+	filesFiltered := filterFiles(strings.Split(filesOneByLine, "\n"), flg.Watch)
 
-	fmt.Println(files)
+	filesInOneLine := strings.Join(filesFiltered, " ")
 
-	return files
+	fmt.Println(filesInOneLine)
+
+	return filesInOneLine
 }
