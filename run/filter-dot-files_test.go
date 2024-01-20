@@ -39,12 +39,18 @@ func TestFilterDotFiles(t *testing.T) {
 		{
 			name:     "husky dot file in deep dir",
 			files:    []string{".husky/post-checkout", "src/xfile1", "src/xfile3"},
-			path: "src",
+			path: ".",
 			expected: []string{"src/xfile1", "src/xfile3"},
 		},
 		{
-			name:     "husky dot file in deep dir",
+			name:     "ignored files",
 			files:    []string{"pnpm-lock.yaml", "package.json", "src/xfile1", "src/xfile3"},
+			path: ".",
+			expected: []string{"src/xfile1", "src/xfile3"},
+		},
+		{
+			name:     "only files in path",
+			files:    []string{"skipFile", "src/xfile1", "src/xfile3"},
 			path: "src",
 			expected: []string{"src/xfile1", "src/xfile3"},
 		},
