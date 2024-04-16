@@ -10,7 +10,7 @@ import (
 // Returns list of git diff files.
 // One line, space separated.
 func GetGitDiffFiles(flg structs.Flg) string {
-	gitArguments := strings.Fields("diff --name-only --diff-filter=d "+flg.Branch)
+	gitArguments := strings.Fields("diff --name-only --diff-filter=d " + flg.Branch)
 
 	out, err := exec.Command("git", gitArguments...).CombinedOutput()
 

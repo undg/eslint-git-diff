@@ -30,5 +30,3 @@ func Eslint(command []string, files string, flg structs.Flg) {
 
 	io.Copy(os.Stdout, cmdReader)
 }
-
-

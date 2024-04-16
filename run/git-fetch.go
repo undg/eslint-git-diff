@@ -13,4 +13,3 @@ func GitFetch() {
 		panic(err)
 	}
 }
-
